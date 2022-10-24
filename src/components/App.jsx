@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { animateScroll as scroll } from 'react-scroll';
-import { Message } from './Message/Message';
 import { Box } from '../App.styled';
+import { animateScroll as scroll } from 'react-scroll';
+
 import { Api } from './Api/Api';
 import { FormSerch } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Modal } from './Modal/Modal';
 import { LoadMoreBtn } from './Button/Button';
-import { useLayoutEffect } from 'react';
+import { Message } from './Message/Message';
 
 export const App = () => {
   const [showBtn, setShowBtn] = useState(false);
@@ -24,6 +24,7 @@ export const App = () => {
   useEffect(() => {
     if (serchQuery === '') return;
     setShowSpiner(true);
+
     Api(serchQuery, page)
       .then(({ data: { hits, totalHits } }) => {
         setData(prevState => prevState.concat(hits));
