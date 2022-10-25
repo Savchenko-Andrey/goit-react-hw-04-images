@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Box } from '../App.styled';
 import { animateScroll as scroll } from 'react-scroll';
@@ -24,9 +24,10 @@ export const App = () => {
   useEffect(() => {
     if (serchQuery === '') return;
     setShowSpiner(true);
-
+    
     Api(serchQuery, page)
-      .then(({ data: { hits, totalHits } }) => {
+      .then(data => {
+        const { totalHits, hits } = data;
         setData(prevState => prevState.concat(hits));
         setShowBtn(true);
         Message(page, totalHits, hits, setShowBtn);
@@ -37,7 +38,7 @@ export const App = () => {
       .finally(() => {
         setShowSpiner(false);
       });
-    return () => {};
+    return () => { };
   }, [page, serchQuery]);
 
 
@@ -48,7 +49,7 @@ export const App = () => {
   }, [page, serchQuery]);
 
 
-const handeClick = e => {
+  const handeClick = e => {
     e.preventDefault();
     setLargePage(e.currentTarget.name);
     setShowModal(!showModal);
@@ -68,15 +69,15 @@ const handeClick = e => {
     setPage(prevs => prevs + 1);
   };
 
-    return (
-      <Box>
-        <FormSerch onSubmit={handleSubmit} />
-        <ImageGallery onOpenModal={handeClick} data={data} />
-        {showBtn && <LoadMoreBtn onClick={handleClickLoadMoreBtn} />}
-        {showModal && <Modal onClick={toggleModal}>{largePage}</Modal>}
-        {showSpiner && <ClipLoader color="#00BFFF" size={100} />}
-        <ToastContainer autoClose={3000} />
-      </Box>
-    );
-  
+  return (
+    <Box>
+      <FormSerch onSubmit={handleSubmit} />
+      <ImageGallery onOpenModal={handeClick} data={data} />
+      {showBtn && <LoadMoreBtn onClick={handleClickLoadMoreBtn} />}
+      {showModal && <Modal onClick={toggleModal}>{largePage}</Modal>}
+      {showSpiner && <ClipLoader color="#00BFFF" size={100} />}
+      <ToastContainer autoClose={3000} />
+    </Box>
+  );
+
 }
